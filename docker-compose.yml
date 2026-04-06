@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  my-landing:
+    build: .
+    ports:
+      - "3069:3000"
+    environment:
+      - NODE_ENV=production
+      - PUBLIC_BASE_URL=http://11.1.1.4:3030
+    restart: unless-stopped
