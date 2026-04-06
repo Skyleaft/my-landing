@@ -12,7 +12,7 @@ export const api = {
 	},
 
 	async getExperience(): Promise<APIResponse<Experience>> {
-		const res = await fetch(`${getApiUrl()}/landing-pro-experience`);
+		const res = await fetch(`${getApiUrl()}/landing-pro-experience?sort=-since_date&page=1&limit=20`);
 		if (!res.ok) throw new Error('Failed to fetch experience');
 		return res.json();
 	},
