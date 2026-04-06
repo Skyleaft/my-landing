@@ -1,0 +1,1 @@
+.glass-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background-color:rgba(var(--glass-bg),.5);border:1px solid rgba(var(--glass-border),.3);border-radius:var(--radius-xl);border-color:rgba(var(--card-border),.5);transition-property:all;transition-duration:.3s;box-shadow:0 10px 15px -3px #0000001a}

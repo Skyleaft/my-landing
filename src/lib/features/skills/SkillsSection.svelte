@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TechnicalSkill } from '$lib/types/api';
-	import { fly } from 'svelte/transition';
+	import { inView } from '$lib/actions/inView';
 
 	interface Props {
 		skills: TechnicalSkill | null;
@@ -30,8 +30,11 @@
 
 <section id="skills" class="section-blur container mx-auto px-6 py-20">
 	<div class="mb-12 flex flex-col items-center">
-		<h2 class="mb-4 text-4xl font-bold">Technical Skills</h2>
-		<div class="h-1.5 w-20 rounded-full bg-primary-400"></div>
+		<h2 class="reveal reveal-up mb-4 text-4xl font-bold" use:inView>Technical Skills</h2>
+		<div
+			class="reveal reveal-scale stagger-2 h-1.5 w-20 rounded-full bg-primary-400"
+			use:inView
+		></div>
 	</div>
 
 	{#if loading}
@@ -48,15 +51,13 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="glass-card p-10 text-center text-red-500">
-			{error}
-		</div>
+		<div class="glass-card p-10 text-center text-red-500">{error}</div>
 	{:else if skills}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 			{#each categories as cat, i}
 				<div
-					class="glass-card group p-6 hover:-translate-y-2"
-					in:fly={{ y: 20, duration: 600, delay: i * 100 }}
+					class="glass-card group skill-card reveal reveal-up p-6 stagger-{Math.min(i + 1, 8)}"
+					use:inView
 				>
 					<div class="mb-6 flex items-center gap-3">
 						<span class="text-2xl">{cat.icon}</span>

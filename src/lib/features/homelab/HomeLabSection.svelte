@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HomeLab } from '$lib/types/api';
-	import { fly } from 'svelte/transition';
+	import { inView } from '$lib/actions/inView';
 
 	interface Props {
 		homelab: HomeLab[];
@@ -24,8 +24,8 @@
 
 <section id="homelab" class="section-blur container mx-auto px-6 py-20">
 	<div class="mb-12 flex flex-col items-center">
-		<h2 class="mb-4 text-4xl font-bold">My HomeLab Ecosystem</h2>
-		<div class="h-1.5 w-20 rounded-full bg-primary-400"></div>
+		<h2 class="reveal reveal-up mb-4 text-4xl font-bold" use:inView>My HomeLab Ecosystem</h2>
+		<div class="reveal reveal-scale stagger-2 h-1.5 w-20 rounded-full bg-primary-400" use:inView></div>
 	</div>
 
 	{#if loading}
@@ -43,15 +43,13 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="glass-card p-10 text-center text-red-500">
-			{error}
-		</div>
+		<div class="glass-card p-10 text-center text-red-500">{error}</div>
 	{:else}
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each homelab as svc, i}
 				<div
-					class="glass-card group p-8 hover:-translate-y-2 hover:border-primary-400/50 hover:shadow-2xl"
-					in:fly={{ y: 20, duration: 600, delay: i * 150 }}
+					class="glass-card group p-8 hover:-translate-y-2 hover:border-primary-400/50 hover:shadow-2xl reveal reveal-up stagger-{Math.min(i + 1, 8)}"
+					use:inView
 				>
 					<div class="flex flex-col items-center text-center">
 						<div
@@ -65,9 +63,7 @@
 						</h3>
 
 						<div class="mb-4 flex items-center gap-2">
-							<span
-								class="text-xs font-bold tracking-widest uppercase {getCategoryColor(svc.category)}"
-							>
+							<span class="text-xs font-bold tracking-widest uppercase {getCategoryColor(svc.category)}">
 								{svc.category}
 							</span>
 							<span class="h-1 w-1 rounded-full bg-primary-400/30"></span>

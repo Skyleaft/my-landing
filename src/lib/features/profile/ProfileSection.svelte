@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getBaseUrl } from '$lib/services/api';
 	import type { Profile } from '$lib/types/api';
-	import { fade, fly } from 'svelte/transition';
+	import { inView } from '$lib/actions/inView';
 
 	let { data }: { data: Profile | null } = $props();
 </script>
@@ -11,28 +11,32 @@
 		id="profile"
 		class="section-blur container mx-auto flex flex-col items-center px-6 py-20 text-center"
 	>
+		<!-- Avatar -->
 		<div
-			class="glass relative mb-8 h-40 w-40 overflow-hidden rounded-full border-2 border-primary-400/50 p-1"
-			in:fly={{ y: 20, duration: 800, delay: 200 }}
+			class="glass reveal reveal-up stagger-1 relative mb-8 h-40 w-40 overflow-hidden rounded-full border-2 border-primary-400/50 p-1"
+			use:inView
 		>
 			<img src={data.photo_url} alt={data.title} class="h-full w-full rounded-full object-cover" />
 		</div>
 
+		<!-- Name -->
 		<h1
-			class="mb-4 bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
-			in:fly={{ y: 20, duration: 800, delay: 400 }}
+			class="reveal reveal-up stagger-2 mb-4 bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
+			use:inView
 		>
 			{data.title}
 		</h1>
 
+		<!-- Subtitle -->
 		<p
-			class="mb-8 text-xl font-medium text-primary-500 md:text-2xl"
-			in:fly={{ y: 20, duration: 800, delay: 600 }}
+			class="reveal reveal-up stagger-3 mb-8 text-xl font-medium text-primary-500 md:text-2xl"
+			use:inView
 		>
 			{data.sub_title}
 		</p>
 
-		<div class="mb-10" in:fly={{ y: 20, duration: 800, delay: 700 }}>
+		<!-- CV button -->
+		<div class="reveal reveal-up stagger-4 mb-10" use:inView>
 			<a
 				href="{getBaseUrl()}{data.cv_file}"
 				target="_blank"
@@ -61,9 +65,10 @@
 			</a>
 		</div>
 
+		<!-- About card -->
 		<div
-			class="glass-card max-w-3xl p-10 text-left text-lg leading-relaxed"
-			in:fly={{ y: 30, duration: 800, delay: 800 }}
+			class="glass-card reveal reveal-up stagger-5 max-w-3xl p-10 text-left text-lg leading-relaxed"
+			use:inView
 		>
 			<div class="prose max-w-none dark:prose-invert">
 				{@html data.about}
