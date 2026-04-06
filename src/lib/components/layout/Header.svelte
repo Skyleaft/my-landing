@@ -4,11 +4,15 @@
 
 	let scrolled = $state(false);
 
-	if (typeof window !== 'undefined') {
-		window.addEventListener('scroll', () => {
+	$effect(() => {
+		const handleScroll = () => {
 			scrolled = window.scrollY > 50;
-		});
-	}
+		};
+
+		handleScroll();
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	});
 
 	const navItems = [
 		{ name: 'Profile', href: '#profile' },

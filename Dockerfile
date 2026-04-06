@@ -20,17 +20,12 @@ FROM node:24-alpine AS production
 
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Copy package files and install production dependencies
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile
-
-# Copy built application
-COPY --from=builder /app/build .
+# The built app is self-contained with adapter-node
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
 ENV NODE_ENV=production
 
-CMD ["node", "index.js"]
+# The built SvelteKit server is in build/index.js
+CMD ["node", "build/index.js"]
