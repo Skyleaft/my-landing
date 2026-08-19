@@ -10,8 +10,8 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy dependency configuration files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* .npmrc* ./
+# Copy dependency and project config files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* .npmrc* svelte.config.js* tsconfig.json* ./
 
 # Install dependencies with frozen lockfile
 RUN pnpm install --frozen-lockfile
