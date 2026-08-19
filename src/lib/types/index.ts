@@ -17,3 +17,4 @@ export interface Experience {
 
 export * from './homelab.js';
 export * from './gameserver.js';
+export * from './github.js';

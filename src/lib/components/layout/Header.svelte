@@ -18,8 +18,10 @@
 		{ name: 'Profile', href: '#profile' },
 		{ name: 'Experience', href: '#experience' },
 		{ name: 'Skills', href: '#skills' },
+		{ name: 'Activity', href: '#activity' },
 		{ name: 'HomeLab', href: '#homelab' }
 	];
+
 </script>
 
 <header
