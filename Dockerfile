@@ -11,15 +11,15 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy dependency and project config files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* .npmrc* svelte.config.js* tsconfig.json* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc svelte.config.js tsconfig.json ./
 
-# Install dependencies with frozen lockfile
-RUN pnpm install --frozen-lockfile
+# Install dependencies without running untrusted/blocked lifecycle scripts
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy source code
 COPY . .
 
-# Build application
+# Build application (generates SvelteKit node build)
 RUN pnpm build
 
 # Production stage
