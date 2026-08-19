@@ -1,13 +1,20 @@
-
 FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
+# Install libc6-compat for native modules (Tailwind oxide & esbuild)
+RUN apk add --no-cache libc6-compat
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Install pnpm via corepack
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy dependency configuration files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* .npmrc* ./
+
+# Install dependencies with frozen lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
@@ -20,12 +27,16 @@ FROM node:24-alpine AS production
 
 WORKDIR /app
 
-# The built app is self-contained with adapter-node
+RUN apk add --no-cache libc6-compat
+
+# Copy built application and package definition
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
 ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
-# The built SvelteKit server is in build/index.js
+# Run the SvelteKit node server
 CMD ["node", "build/index.js"]
